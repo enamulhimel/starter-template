@@ -1,10 +1,10 @@
-import CommonWrapper from "../common/CommonWrapper";
+import CommonWrapper from '../common/CommonWrapper';
 import {
   decrement,
   increment,
   reset,
-} from "@/store/Slices/counterSlice/counterSlice";
-import { useAppDispatch, useAppSelector } from "@/hooks/useRedux";
+} from '@/store/Slices/counterSlice/counterSlice';
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
 
 const Home = () => {
   const count = useAppSelector((state) => state.counter.value);

@@ -1,43 +1,53 @@
-import UserAvatar from "@/ui/UserAvatar";
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { useAppDispatch } from "@/hooks/useRedux";
-import { logout } from "@/store/Slices/AuthSlice/authSlice";
+import { Link } from 'react-router-dom';
+
+import { SiFalcon } from 'react-icons/si';
+import SearchBar from '@/common/SearchBar';
+import { IoCartOutline } from 'react-icons/io5';
+import { CiUser } from 'react-icons/ci';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
 const Navbar: React.FC = () => {
-  const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
+  const cartItems = useSelector((state: RootState) => state.cart.items) || [];
+  const cartQuantity = cartItems.reduce(
+    (acc, item) =>
+      acc + (typeof item.quantity === 'number' ? item.quantity : 0),
+    0
+  );
+  // const navigate = useNavigate();
+  // const [isOpen, setIsOpen] = useState(false);
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  // const toggleMenu = () => {
+  //   setIsOpen(!isOpen);
+  // };
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/login");
-  };
+  // const handleLogout = () => {
+  //   dispatch(logout());
+  //   navigate('/login');
+  // };
 
   return (
-    <nav className="bg-website-color-green shadow-lg">
+    <nav className="bg-[#0F172A] shadow-lg">
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-around h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <Link to="/" className="text-white text-2xl font-bold">
-              MyApp
+            <Link
+              to="/"
+              className="text-white text-2xl font-bold flex flex-row items-center justify-center gap-x-2"
+            >
+              <SiFalcon />
+              Falcon
             </Link>
+          </div>
+          <div className="pt-10">
+            <SearchBar />
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-4">
+          {/* <div className="hidden md:flex space-x-4">
             <Link
               to="/"
               className="text-white hover:bg-website-color-lightGray hover:text-black px-3 py-2 rounded-md text-sm font-medium"
@@ -76,10 +86,10 @@ const Navbar: React.FC = () => {
                 </Button>
               </PopoverContent>
             </Popover>
-          </div>
+          </div> */}
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center">
+          {/* <div className="md:hidden flex items-center">
             <button
               onClick={toggleMenu}
               type="button"
@@ -108,12 +118,24 @@ const Navbar: React.FC = () => {
                 )}
               </svg>
             </button>
+          </div> */}
+
+          <div className="cursor-pointer text-white flex flex-row items-center justify-center gap-x-5 text-2xl pr-5">
+            <div className="relative">
+              <IoCartOutline />
+              {cartQuantity > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                  {cartQuantity}
+                </span>
+              )}
+            </div>
+            <CiUser />
           </div>
         </div>
       </div>
 
       {/* Mobile Menu */}
-      {isOpen && (
+      {/* {isOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <Link
@@ -142,7 +164,7 @@ const Navbar: React.FC = () => {
             </Link>
           </div>
         </div>
-      )}
+      )} */}
     </nav>
   );
 };
